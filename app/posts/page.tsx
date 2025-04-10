@@ -1,6 +1,6 @@
 import React from 'react'
-import PostCard from '@/components/PostCard'; // Adjust import path if needed
-import { getPosts } from '@/lib/posts'; // Adjust import path
+import PostCard from '@/components/PostCard';
+import prisma from "@/lib/prisma";
 
 export const metadata = {
     title: 'Blog Posts',
@@ -8,8 +8,11 @@ export const metadata = {
 };
 
 export default async function PostsPage() {
-    // Fetch data directly in the Server Component
-    const posts = await getPosts();
+    const posts = await prisma.post.findMany({
+        include: {
+            author: true,
+        },
+    });
 
     return (
         <main className="container mx-auto px-4 py-8">

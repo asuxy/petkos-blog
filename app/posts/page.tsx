@@ -1,6 +1,7 @@
 import React from 'react'
-import PostCard from '@/components/PostCard';
+import PostCard from '@/components/layout/PostCard';
 import prisma from "@/lib/prisma";
+import { CreatePostButton } from '@/components/ui/postButtons';
 
 export const metadata = {
     title: 'Blog Posts',
@@ -19,6 +20,8 @@ export default async function PostsPage() {
             <h1 className="text-3xl md:text-4xl font-bold mb-8 text-center text-gray-900 dark:text-white">
                 Blog Posts
             </h1>
+
+            <CreatePostButton />
 
             {posts && posts.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">

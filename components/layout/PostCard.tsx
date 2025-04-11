@@ -13,7 +13,6 @@ interface PostCardProps {
 
 export default async function PostCard({ post }: PostCardProps) {
     if (!post) {
-        // Although unlikely if called correctly from PostsPage, good practice
         return notFound();;
     }
 

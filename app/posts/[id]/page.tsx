@@ -4,6 +4,7 @@ import { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from "next/navigation";
 import prisma from '@/lib/prisma';
 import type { Post, User } from '@prisma/client';
+import { DeletePostButton, UpdatePostButton } from '@/components/ui/postButtons';
 
 interface PostPageProps {
     params: {
@@ -32,7 +33,7 @@ export async function generateMetadata(
     { params }: PostPageProps,
     parent: ResolvingMetadata
 ): Promise<Metadata> {
-    const id = params.id;
+    const { id } = await params;
     const postId = parseInt(id, 10);
 
     if (isNaN(postId)) {
@@ -80,7 +81,7 @@ export async function generateMetadata(
 
 // --- The Page Component ---
 export default async function PostPage({ params }: PostPageProps) {
-    const id = params.id;
+    const { id } = await params;
     const postId = parseInt(id, 10);
 
     if (isNaN(postId)) {
@@ -99,16 +100,6 @@ export default async function PostPage({ params }: PostPageProps) {
     if (!post) {
         notFound();
     }
-
-    /*
-    const formattedDate = post.createdAt // Assuming createdAt exists
-        ? new Date(post.createdAt).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-        })
-        : 'Date not available';
-    */
 
     const authorName = post.author?.name ?? 'Unknown Author';
 
@@ -162,6 +153,10 @@ export default async function PostPage({ params }: PostPageProps) {
                 )}
             </div>
 
+            <div className="mt-12 pt-6 border-t border-gray-200 dark:border-gray-700">
+                <UpdatePostButton id={postId} />
+                <DeletePostButton id={postId} />
+            </div>
 
             {/* Back link */}
             <div className="mt-12 pt-6 border-t border-gray-200 dark:border-gray-700">

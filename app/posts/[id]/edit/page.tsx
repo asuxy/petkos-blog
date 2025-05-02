@@ -1,4 +1,4 @@
-import EditPostForm from '@/components/forms/EditPostForm';
+import EditPostForm from '@/components/forms/edit-post-form';
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import type { Post } from '@prisma/client';

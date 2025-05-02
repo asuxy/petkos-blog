@@ -1,7 +1,7 @@
 import React from 'react'
-import PostCard from '@/components/layout/PostCard';
+import PostCard from '@/components/layout/post-card';
 import prisma from "@/lib/prisma";
-import { CreatePostButton } from '@/components/ui/postButtons';
+import { CreatePostButton } from '@/components/ui/post-buttons';
 
 export const metadata = {
     title: 'Blog Posts',

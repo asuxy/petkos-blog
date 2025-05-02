@@ -1,13 +1,19 @@
 "use client"
 
-import { createPost, State } from '../../lib/actions/blogActions'
+import { updatePost, State } from '../../lib/actions/blog-actions'
 import { useActionState } from 'react';
 import { Button } from '../ui/button';
+import { Post } from '@prisma/client'
 import { useFormStatus } from "react-dom";
 
-export default function CreatePostForm() {
+interface EditPostFormProps {
+    post: Pick<Post, 'id' | 'title' | 'content'>; // Get only needed fields
+}
+
+export default function EditPostForm({ post }: EditPostFormProps) {
     const initialState: State = { message: null, errors: {} };
-    const [state, formAction] = useActionState(createPost, initialState);
+    const updatePostWithId = updatePost.bind(null, post.id);
+    const [state, formAction] = useActionState(updatePostWithId, initialState);
     const { pending } = useFormStatus();
 
     return (
@@ -27,6 +33,7 @@ export default function CreatePostForm() {
                     name="title"
                     aria-describedby="title-error"
                     placeholder="Enter your post title"
+                    defaultValue={post.title}
                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                     required
                 />
@@ -48,6 +55,7 @@ export default function CreatePostForm() {
                     aria-describedby='content-error'
                     placeholder="Write your post content here..."
                     rows={10}
+                    defaultValue={post.content ?? ''}
                     className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                     required
                 />
@@ -61,10 +69,10 @@ export default function CreatePostForm() {
             </div>
             <Button
                 type="submit"
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50"
                 disabled={pending}
                 aria-disabled={pending}>
-                {pending ? 'Creating...' : 'Create Post'}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50"
+                {pending ? 'Updating...' : 'Update Post'}
             </Button>
         </form>
     )

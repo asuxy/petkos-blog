@@ -1,4 +1,4 @@
-import { deletePost } from '@/lib/actions/blogActions';
+import { deletePost } from '@/lib/actions/blog-actions';
 import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { Button, buttonVariants } from './button';

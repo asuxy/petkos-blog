@@ -4,7 +4,7 @@ import { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from "next/navigation";
 import prisma from '@/lib/prisma';
 import type { Post, User } from '@prisma/client';
-import { DeletePostButton, UpdatePostButton } from '@/components/ui/postButtons';
+import { DeletePostButton, UpdatePostButton } from '@/components/ui/post-buttons';
 
 interface PostPageProps {
     params: {

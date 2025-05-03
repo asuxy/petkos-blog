@@ -4,15 +4,15 @@ import { notFound } from 'next/navigation';
 import type { Post } from '@prisma/client';
 
 export default async function EditPostPage({ params }: { params: { id: string } }) {
-    const id = parseInt(params.id, 10);
+    const { id } = await params;
+    const postId = parseInt(id, 10);
 
-    if (isNaN(id)) {
+    if (isNaN(postId)) {
         notFound();
     }
 
-    // Fetch the post data needed for the form
     const post: Post | null = await prisma.post.findUnique({
-        where: { id: id },
+        where: { id: postId },
         select: {
             id: true,
             title: true,

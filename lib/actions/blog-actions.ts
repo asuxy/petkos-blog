@@ -1,6 +1,5 @@
 'use server'
 
-import { Post } from "@/app/generated/prisma";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -42,15 +41,19 @@ export async function createPost(prevState: State, formData: FormData): Promise<
 
     const { title, content } = validatedFields.data;
 
+    let post;
+
     try {
-        await prisma.post.create({
+        post = await prisma.post.create({
             data: {
                 title,
                 content,
                 authorId: 1, //TODO
-                published: true, //TODO
+                published: false,
             },
         });
+
+        console.log(post);
     } catch (error) {
         console.error('Database Error:', error);
         return {
@@ -59,7 +62,8 @@ export async function createPost(prevState: State, formData: FormData): Promise<
     }
 
     revalidatePath("/posts");
-    redirect("/posts");
+    revalidatePath(`/posts/${post.id}`);
+    redirect(`/posts/${post.id}`);
 }
 
 export async function updatePost(id: number, prevState: State, formData: FormData): Promise<State> {
@@ -130,10 +134,11 @@ export async function publishPost(id: number): Promise<void> {
             data: { published: true },
         });
 
-        revalidatePath("/posts");
-        redirect("/posts");
     } catch (error) {
         console.error("Database Error:", error);
         throw new Error("Failed to publish post due to a database error.");
     }
+
+    revalidatePath("/posts");
+    redirect("/posts");
 }

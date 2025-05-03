@@ -1,5 +1,6 @@
 'use server'
 
+import { Post } from "@/app/generated/prisma";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -114,4 +115,25 @@ export async function deletePost(id: number): Promise<void> {
 
     revalidatePath('/posts');
     redirect("/posts");
+}
+
+export async function publishPost(id: number): Promise<void> {
+    try {
+        const post = await prisma.post.findUnique({ where: { id } });
+
+        if (!post) {
+            throw new Error("Post not found");
+        }
+
+        await prisma.post.update({
+            where: { id },
+            data: { published: true },
+        });
+
+        revalidatePath("/posts");
+        redirect("/posts");
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to publish post due to a database error.");
+    }
 }

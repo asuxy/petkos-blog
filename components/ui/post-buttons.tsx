@@ -1,54 +1,67 @@
-import { deletePost } from '@/lib/actions/blog-actions';
-import { PencilIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { deletePost, publishPost } from '@/lib/actions/blog-actions';
 import Link from 'next/link';
-import { Button, buttonVariants } from './button';
-import { cn } from '@/lib/utils';
+import { Button } from './button';
+import { RocketIcon, PencilIcon, PlusIcon, TrashIcon } from 'lucide-react';
 
 export function CreatePostButton() {
     return (
-        <Link
-            href="/posts/new"
-            className={cn(buttonVariants({ variant: 'default' }))} // Apply variants directly
-        >
-            <PlusIcon className="h-5 w-5 mr-2" />
-            Create Post
-        </Link>
+        <Button asChild>
+            <Link href="/posts/new">
+                <PlusIcon className="h-5 w-5 mr-2" />
+                New Post
+            </Link>
+        </Button>
     );
 }
 
 export function UpdatePostButton({ id }: { id: number }) {
     return (
-        <Link
-            href={`/posts/${id}/edit`}
-            title="Edit Post"
-            className={cn(buttonVariants({ variant: 'ghost', size: 'icon' }))} // Ghost variant, icon size
-        >
-            <span className="sr-only">Edit Post</span>
-            <PencilIcon className="h-5 w-5" /> {/* Adjust icon size */}
-        </Link>
-    );
-}
-function DeleteSubmitButton() {
-    return (
-        <Button
-            variant="destructive" // Destructive variant
-            size="icon" // Icon size
-            type="submit"
-            title="Delete Post"
-        >
-            <span className="sr-only">Delete Post</span>
-            <TrashIcon className="h-5 w-5" /> {/* Adjust icon size */}
+        <Button variant="secondary" size="icon" asChild>
+            <Link href={`/posts/${id}/edit`} title="Edit Post">
+                <span className="sr-only">Edit Post</span>
+                <PencilIcon className="h-4 w-4" />
+            </Link>
         </Button>
     );
 }
 
 export function DeletePostButton({ id }: { id: number }) {
-    const deletePostWithId = deletePost.bind(null, id);
-
+    const action = deletePost.bind(null, id);
     return (
-        <form action={deletePostWithId}>
-            {/* Add confirmation later: onClick={(e) => !confirm('Are you sure?') && e.preventDefault()} */}
-            <DeleteSubmitButton /> {/* Render the button that uses useFormStatus */}
+        <form action={action}>
+            <Button
+                variant="destructive"
+                size="icon"
+                type="submit"
+                title="Delete Post"
+            >
+                <span className="sr-only">Delete Post</span>
+                <TrashIcon className="h-4 w-4" />
+            </Button>
         </form>
     );
+}
+
+export function PublishPostButton({ id }: { id: number }) {
+    const action = publishPost.bind(null, id);
+    return (
+        <form action={action}>
+            <Button variant="secondary" size="icon">
+                <span className="sr-only">Publish Post</span>
+                <RocketIcon className="h-4 w-4" />
+            </Button>
+        </form>
+    );
+}
+
+export function BackToPostsButton() {
+    return (
+        <div className="mt-12 pt-6 border-t border-border">
+            <Button asChild variant="link" className="text-base">
+                <Link href="/posts">
+                    ← Back to all posts
+                </Link>
+            </Button>
+        </div>
+    )
 }

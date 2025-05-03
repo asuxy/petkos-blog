@@ -22,30 +22,7 @@ export default async function PostCard({ post }: PostCardProps) {
     return (
         <Link href={`/posts/${post.id}`} legacyBehavior>
             <a className="block border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-200 ease-in-out bg-white dark:bg-gray-800 dark:border-gray-700">
-                {/*post.imageUrl && (
-                    <div className="relative w-full h-48">
-                        <Image
-                            src={post.imageUrl}
-                            alt={`Cover image for ${post.title}`}
-                            layout="fill"
-                            objectFit="cover" 
-                            className="transition-transform duration-300 ease-in-out group-hover:scale-105"
-                        />
-                    </div>
-                )*/}
-
                 <div className="p-4">
-                    {/*
-                    {post.date && (
-                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
-                            {new Date(post.date).toLocaleDateString('en-US', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric',
-                            })}
-                        </p>
-                    )}
-                    */}
 
                     {/* Title */}
                     <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400">

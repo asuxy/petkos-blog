@@ -3,7 +3,7 @@ import GitHub from "next-auth/providers/github"
 import Credentials from "next-auth/providers/credentials"
 import type { Provider } from "next-auth/providers"
 import prisma from "./lib/prisma"
-import { signInSchema } from "./lib/zod"
+import { signInSchema } from "./lib/zod-schemas"
 import bcrypt from "bcryptjs"
 import { ZodError } from "zod"
 

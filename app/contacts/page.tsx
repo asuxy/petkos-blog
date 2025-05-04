@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/form'
 import { useActionState } from 'react'
 import { handleContactForm } from '@/lib/actions/contact-actions'
-import { contactSchema } from "@/lib/zod"
+import { contactSchema } from "@/lib/zod-schemas"
 
 type ContactFormData = z.infer<typeof contactSchema>
 
@@ -33,7 +33,6 @@ export default function ContactsPage() {
 
     return (
         <div className="container grid grid-cols-1 md:grid-cols-2 gap-12 py-12 max-w-5xl mx-auto">
-            {/* Contact Form */}
             <div>
                 <h1 className="text-2xl font-semibold mb-4">Send us a message</h1>
                 <Form {...form}>
@@ -77,7 +76,6 @@ export default function ContactsPage() {
                 </Form>
             </div>
 
-            {/* Static Info */}
             <div className="space-y-6">
                 <h2 className="text-2xl font-semibold">Contact Information</h2>
                 <p className="text-muted-foreground">We're available weekdays 9am–6pm</p>

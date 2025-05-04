@@ -3,17 +3,7 @@
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { z } from 'zod';
-
-const FormSchema = z.object({
-    id: z.string(),
-    title: z.string().trim().nonempty({
-        message: 'Title is required'
-    }),
-    content: z.string().trim().nonempty({
-        message: 'Content is required'
-    }),
-});
+import { postSchema } from "../zod-schemas";
 
 export type State = {
     errors?: {
@@ -23,8 +13,8 @@ export type State = {
     message?: string | null;
 };
 
-const CreatePost = FormSchema.omit({ id: true });
-const UpdatePost = FormSchema.omit({ id: true });
+const CreatePost = postSchema.omit({ id: true });
+const UpdatePost = postSchema.omit({ id: true });
 
 export async function createPost(prevState: State, formData: FormData): Promise<State> {
     const validatedFields = CreatePost.safeParse({

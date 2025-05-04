@@ -40,7 +40,7 @@ export default function Header() {
                     </NavigationMenuList>
                 </NavigationMenu>
 
-                <Button variant="outline" className="text-sm">
+                <Button size="lg" className="text-sm">
                     <Link href="/login">
                         Login
                     </Link>

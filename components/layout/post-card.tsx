@@ -1,4 +1,3 @@
-// components/PostCard.js
 import Link from 'next/link';
 import { notFound } from "next/navigation";
 import type { Post, User } from '@prisma/client';

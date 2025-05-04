@@ -1,7 +1,7 @@
 "use server"
 
 import { sendEmail } from '@/lib/email'
-import { contactSchema } from '../zod'
+import { contactSchema } from '../zod-schemas'
 
 export async function handleContactForm(prevState: any, formData: FormData) {
     const validated = contactSchema.safeParse({

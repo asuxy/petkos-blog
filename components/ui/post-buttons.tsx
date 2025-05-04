@@ -16,7 +16,7 @@ export function CreatePostButton() {
 
 export function UpdatePostButton({ id }: { id: number }) {
     return (
-        <Button variant="secondary" size="icon" asChild>
+        <Button variant="secondary" size="icon">
             <Link href={`/posts/${id}/edit`} title="Edit Post">
                 <span className="sr-only">Edit Post</span>
                 <PencilIcon className="h-4 w-4" />

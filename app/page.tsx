@@ -1,17 +1,11 @@
-import prisma from "@/lib/prisma";
+import HomePage from '@/components/ui/home'
+import prisma from '@/lib/prisma'
 
-export default async function Home() {
-  const users = await prisma.user.findMany();
-  return (
-    <>
-      <h1 className="h-130">Petko's Blog</h1>
-      <ol className="list-decimal list-inside font-[family-name:var(--font-geist-sans)]">
-        {users.map((user) => (
-          <li key={user.id} className="mb-2">
-            {user.name}
-          </li>
-        ))}
-      </ol>
-    </>
-  );
+export default async function Page() {
+  const posts = await prisma.post.findMany({
+    orderBy: { createdAt: 'desc' },
+    take: 3,
+  })
+
+  return <HomePage posts={posts} />
 }

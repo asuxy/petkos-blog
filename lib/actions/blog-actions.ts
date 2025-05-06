@@ -121,7 +121,10 @@ export async function publishPost(id: number): Promise<void> {
 
         await prisma.post.update({
             where: { id },
-            data: { published: true },
+            data: {
+                published: true,
+                publishedAt: Date.now().toLocaleString(),
+            },
         });
 
     } catch (error) {
@@ -131,4 +134,20 @@ export async function publishPost(id: number): Promise<void> {
 
     revalidatePath("/posts");
     redirect("/posts");
+}
+
+export async function getCategories() {
+    try {
+        const categories = await prisma.category.findMany();
+
+        const categoryOptions = categories.map((c) => ({
+            label: c.name,
+            value: String(c.id),
+        }))
+
+        return categoryOptions;
+    } catch (error) {
+        console.error("Database Error:", error);
+        throw new Error("Failed to load categories");
+    }
 }

@@ -1,6 +1,6 @@
 "use client"
 
-import { createPost, State } from '../../lib/actions/blog-actions'
+import { createPost, getCategories, State } from '../../lib/actions/blog-actions'
 import { useActionState } from 'react';
 import { Button } from '../ui/button';
 import {
@@ -10,6 +10,7 @@ import {
     FormItem,
     FormControl,
     FormMessage,
+    FormDescription,
 } from '@/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -17,15 +18,22 @@ import * as z from 'zod'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { postSchema } from '@/lib/zod-schemas';
+import { MultiSelect } from '../multi-select';
 
 type PostFormData = z.infer<typeof postSchema>
 
-export default function CreatePostForm() {
+interface CreatePostFormProps {
+    categories: { label: string; value: string }[]
+}
+
+export default function CreatePostForm({ categories }: CreatePostFormProps) {
     const form = useForm<PostFormData>({
         resolver: zodResolver(postSchema),
         defaultValues: {
             title: '',
             content: '',
+            excerpt: '',
+            categories: [],
         },
     })
 
@@ -54,6 +62,41 @@ export default function CreatePostForm() {
                             </FormItem>
                         )}
                     />
+
+                    <FormField
+                        control={form.control}
+                        name="categories"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Categories</FormLabel>
+                                <FormControl>
+                                    <MultiSelect
+                                        options={categories}
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}
+                                        placeholder="Select options"
+                                        variant="inverted"
+                                    />
+                                </FormControl>
+                                <FormDescription>
+                                    Choose related to content categories.
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+                    <FormField
+                        control={form.control}
+                        name="excerpt"
+                        render={({ field }) =>
+                            <FormItem>
+                                <FormLabel>Description</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="Enter your a short description, no more than 100 symbols" {...field} />
+                                </FormControl>
+                            </FormItem>}>
+                    </FormField>
 
                     <FormField
                         control={form.control}

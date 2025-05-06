@@ -1,3 +1,4 @@
+import { MultiSelect } from '@/components/multi-select';
 import * as z from 'zod'
 
 export const signInSchema = z.object({
@@ -40,4 +41,10 @@ export const postSchema = z.object({
     content: z.string().trim().nonempty({
         message: 'Content is required'
     }),
+    excerpt: z.string().trim()
+        .nonempty({ message: 'Excerpt is required' })
+        .max(100, { message: 'Maximum allowed length is 100' }),
+    categories: z
+        .array(z.string())
+        .min(1, { message: 'Please select at least one category' }),
 });

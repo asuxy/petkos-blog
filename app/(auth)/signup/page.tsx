@@ -18,7 +18,7 @@ export default function SignupPage() {
                     </div>
                 )}
                 <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label htmlFor="name" className="block text-sm font-medium">
                         Username
                     </label>
                     <input
@@ -27,14 +27,14 @@ export default function SignupPage() {
                         aria-describedby="name-error"
                         placeholder="Name"
                         required
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                        className="w-full px-4 py-2 border"
                     />
                     <div id="name-error" aria-live="polite" aria-atomic="true">
                         {state?.errors?.name && <p className="mt-1 text-sm text-red-600 dark:text-red-400" >{state.errors.name}</p>}
                     </div>
                 </div>
                 <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label htmlFor="email" className="block text-sm font-medium">
                         Email
                     </label>
                     <input
@@ -43,14 +43,14 @@ export default function SignupPage() {
                         aria-describedby="email-error"
                         placeholder="Yours@email.com"
                         required
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                        className="w-full px-4 py-2 border"
                     />
                     <div id="email-error" aria-live="polite" aria-atomic="true">
                         {state?.errors?.email && <p className="mt-1 text-sm text-red-600 dark:text-red-400">{state.errors.email}</p>}
                     </div>
                 </div>
                 <div>
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label htmlFor="password" className="block text-sm font-medium">
                         Password
                     </label>
                     <input
@@ -59,7 +59,7 @@ export default function SignupPage() {
                         aria-describedby="password-error"
                         placeholder="Password"
                         required
-                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                        className="w-full px-4 py-2 border"
                     />
                     <div id="password-error" aria-live="polite" aria-atomic="true">
                         {state?.errors?.password && (
@@ -74,7 +74,7 @@ export default function SignupPage() {
                         )}
                     </div>
                 </div>
-                <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label htmlFor="confirm-password" className="block text-sm font-medium">
                     Confirm Your Password
                 </label>
                 <input
@@ -82,11 +82,11 @@ export default function SignupPage() {
                     name="confirm-password"
                     placeholder="Password"
                     required
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:text-white"
+                    className="w-full px-4 py-2 border"
                 />
                 <Button
                     type="submit"
-                    className="w-full p-2 bg-blue-600 text-white rounded"
+                    className="w-full p-2"
                     disabled={pending}
                     aria-disabled={pending}>
                     {pending ? 'Creating...' : 'Register'}

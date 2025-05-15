@@ -1,8 +1,16 @@
 import Link from "next/link"
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList, NavigationMenuLink } from "@/components/ui/navigation-menu"
 import { Button } from "@/components/ui/button"
+import { auth } from "@/auth"
+import { SignOut } from "../sign-out"
 
-export default function Header() {
+export default async function Header() {
+    const session = await auth();
+
+    if (session?.user) {
+        console.log(session.user.name) // etc
+    }
+
     return (
         <header className="bg-background border-b shadow-sm">
             <div className="container mx-auto px-4 py-4 flex justify-between items-center max-w-5xl">
@@ -40,11 +48,13 @@ export default function Header() {
                     </NavigationMenuList>
                 </NavigationMenu>
 
-                <Button size="lg" className="text-sm">
-                    <Link href="/login">
-                        Login
-                    </Link>
-                </Button>
+                {session?.user?.id ? (<SignOut />) : (
+                    <Button size="lg" className="text-sm">
+                        <Link href="/signin">
+                            Sign In
+                        </Link>
+                    </Button>
+                )}
             </div>
         </header>
     )

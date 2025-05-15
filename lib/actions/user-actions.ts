@@ -1,6 +1,6 @@
 'use server'
 
-import prisma from "@/lib/prisma"
+import db from "@/lib/prisma"
 import { signUpSchema } from "../zod-schemas"
 import bcrypt from "bcryptjs"
 import { redirect } from "next/navigation"
@@ -37,7 +37,7 @@ export async function registerUser(prevState: State, formData: FormData): Promis
         }
     }
 
-    const existingUser = await prisma.user.findUnique({ where: { email: email } })
+    const existingUser = await db.user.findUnique({ where: { email: email } })
     if (existingUser) {
         return {
             message: 'Email already registered',
@@ -46,7 +46,7 @@ export async function registerUser(prevState: State, formData: FormData): Promis
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await prisma.user.create({
+    await db.user.create({
         data: {
             name,
             email,
@@ -55,4 +55,24 @@ export async function registerUser(prevState: State, formData: FormData): Promis
     });
 
     redirect('/login');
+}
+
+export async function authUser(email: string, password: string) {
+    const user = await db.user.findUnique({
+        where: { email },
+    })
+
+    if (!user || !user.password) {
+        throw new Error("No user found")
+    }
+
+    const isValid = await bcrypt.compare(password, user.password)
+    if (!isValid) throw new Error("Invalid password")
+
+    return {
+        id: String(user.id),
+        email: user.email,
+        name: user.name,
+        role: user.role,
+    }
 }

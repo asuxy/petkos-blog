@@ -1,6 +1,6 @@
 import React from 'react'
 import PostCard from '@/components/layout/post-card';
-import prisma from "@/lib/prisma";
+import db from "@/lib/prisma";
 import { CreatePostButton } from '@/components/ui/post-buttons';
 
 export const metadata = {
@@ -9,7 +9,7 @@ export const metadata = {
 };
 
 export default async function PostsPage() {
-    const posts = await prisma.post.findMany({
+    const posts = await db.post.findMany({
         include: {
             author: true,
         },

@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../app/generated/prisma"
 }
 
 datasource db {
@@ -9,14 +8,70 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String
-  createdAt DateTime @default(now())
-  role      Role     @default(USER)
-  password  String
-  posts     Post[]
-  profile   Profile?
+  id            Int             @id @default(autoincrement())
+  email         String          @unique
+  name          String
+  createdAt     DateTime        @default(now())
+  role          Role            @default(USER)
+  password      String
+  emailVerified DateTime?
+  lastName      String?
+  updatedAt     DateTime        @default(now()) @updatedAt
+  accounts      Account[]
+  Authenticator Authenticator[]
+  posts         Post[]
+  profile       Profile?
+  sessions      Session[]
+}
+
+model Account {
+  userId            Int
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @default(now()) @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       Int
+  expires      DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+model Authenticator {
+  credentialID         String  @unique
+  userId               Int
+  providerAccountId    String
+  credentialPublicKey  String
+  counter              Int
+  credentialDeviceType String
+  credentialBackedUp   Boolean
+  transports           String?
+  user                 User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, credentialID])
 }
 
 model Profile {
@@ -27,26 +82,24 @@ model Profile {
 }
 
 model Post {
-  id            Int       @id @default(autoincrement())
-  title         String    @db.VarChar(255)
-  content       String?   @db.VarChar
-  slug          String?   @unique
-  excerpt       String?   @db.VarChar(280)
-  published     Boolean   @default(false)
-  publishedAt   DateTime?
+  id            Int            @id @default(autoincrement())
+  title         String         @db.VarChar(255)
+  content       String?        @db.VarChar
+  published     Boolean        @default(false)
+  authorId      Int
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
   coverImageUrl String?
-  views         Int       @default(0)
-  readingTime   Int?
-  sources       Json?
+  excerpt       String?        @db.VarChar(280)
   gallery       Json?
-  isDeleted     Boolean   @default(false)
-
-  authorId  Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now()) @updatedAt
-
-  author   User           @relation(fields: [authorId], references: [id])
-  category PostCategory[]
+  isDeleted     Boolean        @default(false)
+  publishedAt   DateTime?
+  readingTime   Int?
+  slug          String?        @unique
+  sources       Json?
+  views         Int            @default(0)
+  author        User           @relation(fields: [authorId], references: [id])
+  category      PostCategory[]
 }
 
 model Category {
@@ -60,9 +113,8 @@ model PostCategory {
   categoryId Int
   assignedAt DateTime @default(now())
   updatedAt  DateTime @default(now()) @updatedAt
-
-  post     Post     @relation(fields: [postId], references: [id])
-  category Category @relation(fields: [categoryId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id])
+  post       Post     @relation(fields: [postId], references: [id])
 
   @@id([postId, categoryId])
 }

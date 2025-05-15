@@ -1,6 +1,6 @@
 'use server'
 
-import prisma from "@/lib/prisma";
+import db from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { postSchema } from "../zod-schemas";
@@ -38,7 +38,7 @@ export async function createPost(prevState: State, formData: FormData): Promise<
     let post;
 
     try {
-        post = await prisma.post.create({
+        post = await db.post.create({
             data: {
                 title,
                 content,
@@ -79,7 +79,7 @@ export async function updatePost(id: number, prevState: State, formData: FormDat
     const { title, content } = validatedFields.data;
 
     try {
-        await prisma.post.update({
+        await db.post.update({
             where: { id: id },
             data: {
                 title,
@@ -105,7 +105,7 @@ export async function deletePost(id: number): Promise<void> {
     }
 
     try {
-        await prisma.post.delete({ where: { id: id } });
+        await db.post.delete({ where: { id: id } });
     } catch (error) {
         console.error('Database Error:', error);
         throw new Error('Failed to delete post due to a database error.');
@@ -117,13 +117,13 @@ export async function deletePost(id: number): Promise<void> {
 
 export async function publishPost(id: number): Promise<void> {
     try {
-        const post = await prisma.post.findUnique({ where: { id } });
+        const post = await db.post.findUnique({ where: { id } });
 
         if (!post) {
             throw new Error("Post not found");
         }
 
-        await prisma.post.update({
+        await db.post.update({
             where: { id },
             data: {
                 published: true,
@@ -142,7 +142,7 @@ export async function publishPost(id: number): Promise<void> {
 
 export async function getCategories() {
     try {
-        const categories = await prisma.category.findMany();
+        const categories = await db.category.findMany();
 
         const categoryOptions = categories.map((c) => ({
             label: c.name,

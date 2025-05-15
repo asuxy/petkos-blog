@@ -1,73 +1,32 @@
 import NextAuth from "next-auth"
-import GitHub from "next-auth/providers/github"
-import Credentials from "next-auth/providers/credentials"
-import type { Provider } from "next-auth/providers"
-import prisma from "./lib/prisma"
-import { signInSchema } from "./lib/zod-schemas"
-import bcrypt from "bcryptjs"
-import { ZodError } from "zod"
+import authConfig from "./auth.config"
+import db from "./lib/prisma"
+import { PrismaAdapter } from "@auth/prisma-adapter"
 
-const providers: Provider[] = [
-    Credentials({
-        name: "credentials",
-        credentials: {
-            email: { label: "Email", type: "email" },
-            password: { label: "Password", type: "password" },
-        },
-        authorize: async (credentials) => {
-            try {
-                let user = null
-
-                const { email, password } = await signInSchema.parseAsync(credentials)
-
-                user = await prisma.user.findUnique({
-                    where: { email: email },
-                })
-
-                if (!user || !user.password) {
-                    throw new Error("No user found")
-                }
-
-                const isValid = await bcrypt.compare(password, user.password)
-
-                if (!isValid) {
-                    throw new Error("Invalid password")
-                }
-
-                return {
-                    id: String(user.id),
-                    email: user.email,
-                    name: user.name,
-                    role: user.role,
-                }
-            } catch (error) {
-                if (error instanceof ZodError) {
-                    // Return `null` to indicate that the credentials are invalid
-                    return null
-                }
-
-                console.error("Authorize error:", error)
-                return null
-            }
-        },
-    }),
-    GitHub,
-]
-
-export const providerMap = providers
-    .map((provider) => {
-        if (typeof provider === "function") {
-            const providerData = provider()
-            return { id: providerData.id, name: providerData.name }
-        } else {
-            return { id: provider.id, name: provider.name }
-        }
-    })
-    .filter((provider) => provider.id !== "credentials")
+const adapter = PrismaAdapter(db);
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-    providers,
-    pages: {
-        signIn: "/login",
+    ...authConfig,
+    adapter,
+    session: {
+        strategy: "jwt",
+    },
+    callbacks: {
+        async jwt({ token, user }) {
+            // Add user data to token on login
+            if (user) {
+                token.id = user.id
+                //token.role = user.role
+            }
+            return token
+        },
+        async session({ session, token }) {
+            // Expose token data in the session
+            if (session.user) {
+                session.user.id = token.id as string
+                //session.user.role = token.role as string
+            }
+            return session
+        },
     },
 })

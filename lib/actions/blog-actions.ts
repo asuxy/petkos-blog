@@ -22,6 +22,10 @@ export async function createPost(prevState: State, formData: FormData): Promise<
         content: formData.get("content"),
     });
 
+    //testing
+
+    let data;
+
     if (!validatedFields.success) {
         return {
             errors: validatedFields.error.flatten().fieldErrors,

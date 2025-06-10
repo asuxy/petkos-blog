@@ -1,8 +1,8 @@
 import HomePage from '@/components/ui/home'
-import prisma from '@/lib/prisma'
+import db from '@/lib/prisma'
 
 export default async function Page() {
-  const posts = await prisma.post.findMany({
+  const posts = await db.post.findMany({
     orderBy: { createdAt: 'desc' },
     take: 3,
   })

@@ -6,7 +6,7 @@
 */
 -- AlterTable
 ALTER TABLE "User" ADD COLUMN     "emailVerified" TIMESTAMP(3),
-ADD COLUMN     "lastName" TEXT NOT NULL,
+ADD COLUMN     "lastName" TEXT,
 ADD COLUMN     "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;
 
 -- CreateTable

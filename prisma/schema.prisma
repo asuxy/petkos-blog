@@ -15,8 +15,8 @@ model User {
   role          Role            @default(USER)
   password      String
   emailVerified DateTime?
-  lastName      String?
   updatedAt     DateTime        @default(now()) @updatedAt
+  lastName      String?
   accounts      Account[]
   Authenticator Authenticator[]
   posts         Post[]

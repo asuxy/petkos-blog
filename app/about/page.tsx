@@ -1,9 +1,16 @@
 import React from 'react'
+import { auth } from "@/auth"
 
-const About = () => {
+export default async function About() {
+    const session = await auth()
+
+    if (!session) {
+        return <div>Not authenticated</div>
+    }
+
     return (
-        <div>About</div>
+        <div className="container">
+            <pre>{JSON.stringify(session, null, 2)}</pre>
+        </div>
     )
 }
-
-export default About

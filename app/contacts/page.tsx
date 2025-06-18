@@ -15,7 +15,7 @@ import {
     FormMessage,
 } from '@/components/ui/form'
 import { useActionState } from 'react'
-import { handleContactForm } from '@/lib/actions/contact-actions'
+import { handleContactForm, State } from '@/lib/actions/contact-actions'
 import { contactSchema } from "@/lib/zod-schemas"
 
 type ContactFormData = z.infer<typeof contactSchema>
@@ -29,7 +29,8 @@ export default function ContactsPage() {
         },
     })
 
-    const [state, formAction, pending] = useActionState(handleContactForm, null)
+    const initialState: State = { message: null, errors: {} };
+    const [state, formAction, pending] = useActionState(handleContactForm, initialState)
 
     return (
         <div className="container grid grid-cols-1 md:grid-cols-2 gap-12 py-12 max-w-5xl mx-auto">
@@ -68,17 +69,15 @@ export default function ContactsPage() {
                         <Button type="submit" disabled={pending}>
                             {pending ? 'Sending...' : 'Send Message'}
                         </Button>
-                        {state?.success && <p className="text-sm text-green-600">Message sent successfully!</p>}
-                        {state?.error && (
-                            <p className="text-sm text-red-600">{state.error}</p>
-                        )}
+                        {state?.isSent && <p className="text-sm text-green-600">Message sent successfully!</p>}
+                        {state?.errors && <p className="text-sm text-red-600">{state.message}</p>}
                     </form>
                 </Form>
             </div>
 
             <div className="space-y-6">
                 <h2 className="text-2xl font-semibold">Contact Information</h2>
-                <p className="text-muted-foreground">We're available weekdays from 9am to 6pm</p>
+                <p className="text-muted-foreground">We are available weekdays from 9am to 6pm</p>
                 <div>
                     <p className="font-medium">Email</p>
                     <p className="text-sm text-muted-foreground">contact@yourdomain.com</p>

@@ -7,6 +7,6 @@ export async function sendEmail({ email, message, name }: { email: string, messa
         from: 'Acme <onboarding@resend.dev>', //TODO when site hosted (use real email)
         to: ['petkov.k.petko@gmail.com'],
         subject: message,
-        html: `<p><strong>From:</strong> ${email}</p><p>${message}</p>`,
+        html: `<p><strong>From:</strong> ${email}</p><p>${message}</p><p>${name}</p>`,
     })
 }

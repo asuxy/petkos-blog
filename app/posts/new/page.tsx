@@ -1,3 +1,4 @@
+import React from 'react';
 import CreatePostForm from "@/components/forms/create-post-form";
 import { getCategories } from "@/lib/actions/blog-actions";
 

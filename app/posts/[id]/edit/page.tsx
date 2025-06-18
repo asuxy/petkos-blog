@@ -1,3 +1,4 @@
+import React from 'react';
 import EditPostForm from '@/components/forms/edit-post-form';
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';

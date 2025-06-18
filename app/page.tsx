@@ -1,3 +1,4 @@
+import React from 'react';
 import HomePage from '@/components/ui/home'
 import db from '@/lib/prisma'
 

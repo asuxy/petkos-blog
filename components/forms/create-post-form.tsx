@@ -1,5 +1,6 @@
 "use client"
 
+import React from 'react';
 import { createPost, State } from '../../lib/actions/blog-actions'
 import { useActionState } from 'react';
 import { Button } from '../ui/button';

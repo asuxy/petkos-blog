@@ -21,7 +21,7 @@ export default function HomePage({ posts }: HomePageProps) {
                     Welcome to my corner of the web ✨
                 </h1>
                 <p className="text-muted-foreground max-w-xl mx-auto">
-                    "Code is the closest thing we have to magic." — me, after deploying something that worked
+                    Code is the closest thing we have to magic
                 </p>
                 <Button asChild>
                     <Link href="/posts">Read the Blog</Link>

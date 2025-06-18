@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { Metadata, ResolvingMetadata } from 'next';
 import { notFound } from "next/navigation";
 import prisma from '@/lib/prisma';
@@ -28,8 +27,7 @@ export async function generateStaticParams(): Promise<{ id: string }[]> {
 }
 
 export async function generateMetadata(
-    { params }: PostPageProps,
-    parent: ResolvingMetadata
+    { params }: PostPageProps
 ): Promise<Metadata> {
     const { id } = await params;
     const postId = parseInt(id, 10);

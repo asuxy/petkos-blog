@@ -1,6 +1,6 @@
 "use client"
 
-import { createPost, getCategories, State } from '../../lib/actions/blog-actions'
+import { createPost, State } from '../../lib/actions/blog-actions'
 import { useActionState } from 'react';
 import { Button } from '../ui/button';
 import {

@@ -78,7 +78,7 @@ export default function ContactsPage() {
 
             <div className="space-y-6">
                 <h2 className="text-2xl font-semibold">Contact Information</h2>
-                <p className="text-muted-foreground">We're available weekdays 9am–6pm</p>
+                <p className="text-muted-foreground">We're available weekdays from 9am to 6pm</p>
                 <div>
                     <p className="font-medium">Email</p>
                     <p className="text-sm text-muted-foreground">contact@yourdomain.com</p>

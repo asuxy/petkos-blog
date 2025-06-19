@@ -5,10 +5,9 @@ import prisma from '@/lib/prisma';
 import type { Post, User } from '@prisma/client';
 import { DeletePostButton, UpdatePostButton, PublishPostButton, BackToPostsButton } from '@/components/ui/post-buttons';
 
-interface PostPageProps {
-    params: {
-        id: string;
-    };
+type PostPageProps = {
+    params: Promise<{ id: string }>
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 type PostWithAuthor = Post & {
@@ -65,7 +64,7 @@ export async function generateMetadata(
     };
 }
 
-export default async function PostPage({ params }: PostPageProps) {
+export default async function PostPage({ params, searchParams }: PostPageProps) {
     const { id } = await params;
     const postId = parseInt(id, 10);
 

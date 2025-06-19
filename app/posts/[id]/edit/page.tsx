@@ -2,9 +2,13 @@ import React from 'react';
 import EditPostForm from '@/components/forms/edit-post-form';
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
-import type { Post } from '@prisma/client';
 
-export default async function EditPostPage({ params }: { params: { id: string } }) {
+type Props = {
+    params: Promise<{ id: string }>
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+export default async function EditPostPage({ params, searchParams }: Props) {
     const { id } = await params;
     const postId = parseInt(id, 10);
 
@@ -12,7 +16,7 @@ export default async function EditPostPage({ params }: { params: { id: string } 
         notFound();
     }
 
-    const post: Post | null = await prisma.post.findUnique({
+    const post = await prisma.post.findUnique({
         where: { id: postId },
         select: {
             id: true,
